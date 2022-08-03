@@ -19,8 +19,27 @@ class ContactController {
       : response.json(contact);
   }
 
-  store() {
+  async store(request, response) {
     // create new data
+    const { name, email, phone, category_id } = request.body;
+
+    if (!name) return response.status(400).json({ error: "Name is required" });
+
+    const contactExists = await ContactRepository.findByEmail(email);
+
+    if (contactExists)
+      return response
+        .status(400)
+        .json({ error: "This e-mail is already been taken" });
+
+    const newContact = await ContactRepository.create({
+      name,
+      email,
+      phone,
+      category_id,
+    });
+
+    response.send(newContact);
   }
 
   update() {
@@ -34,9 +53,7 @@ class ContactController {
 
     const contact = await ContactRepository.findById(id);
 
-    if (!contact) {
-      return response.status(404).json({ error: "User not found" });
-    }
+    if (!contact) return response.status(404).json({ error: "User not found" });
 
     await ContactRepository.delete(id);
     response.sendStatus(204);

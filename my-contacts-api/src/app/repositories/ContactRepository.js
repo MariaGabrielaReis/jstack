@@ -6,7 +6,7 @@ let contacts = [
     name: "Maby",
     email: "maby@gmail.com",
     phone: "12999999999",
-    category: v4(),
+    category_id: v4(),
   },
 ];
 
@@ -20,6 +20,27 @@ class ContactRepository {
   findById(id) {
     return new Promise((resolve) => {
       resolve(contacts.find((contact) => contact.id === id));
+    });
+  }
+
+  findByEmail(email) {
+    return new Promise((resolve) => {
+      resolve(contacts.find((contact) => contact.email === email));
+    });
+  }
+
+  create({ name, email, phone, category_id }) {
+    return new Promise((resolve) => {
+      const newContact = {
+        id: v4(),
+        name,
+        email,
+        phone,
+        category_id,
+      };
+
+      contacts.push(newContact);
+      resolve(newContact);
     });
   }
 
