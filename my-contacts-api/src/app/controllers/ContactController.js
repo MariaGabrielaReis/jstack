@@ -3,7 +3,8 @@ class ContactController {
   async index(request, response) {
     // get all data
 
-    const contacts = await ContactRepository.findAll();
+    const { orderBy } = request.query;
+    const contacts = await ContactRepository.findAll(orderBy);
     response.json(contacts);
   }
 
