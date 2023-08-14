@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 
 export function Post(props) {
@@ -5,10 +6,19 @@ export function Post(props) {
     <>
       <article>
         <strong>{props.post.title}</strong> <br />
-        <small>{props.post.subtitle}</small>
+        <span>{props.post.subtitle}</span> <br />
+        <small>Curtidas: {props.likes}</small>
       </article>
 
       <br />
     </>
   );
 }
+
+Post.propTypes = {
+  likes: PropTypes.number.isRequired,
+  post: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string,
+  }).isRequired,
+};
